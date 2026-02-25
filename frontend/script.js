@@ -4,20 +4,19 @@ async function fetchData() {
       "https://patient-monitar-production.up.railway.app/api/data"
     );
 
-    if (!response.ok) {
-      throw new Error("Server error");
-    }
+    if (!response.ok) throw new Error("Server error");
 
     const data = await response.json();
 
-    document.getElementById("heart").innerText =
-      data.heartRate + " BPM";
+    const heartEl = document.getElementById("heart");
+    const waterEl = document.getElementById("water");
+    const foodEl = document.getElementById("food");
 
-    document.getElementById("water").innerText =
-      data.water + " %";
-
-    document.getElementById("food").innerText =
-      data.food + " %";
+    if (heartEl && waterEl && foodEl) {
+      heartEl.innerText = data.heartRate + " BPM";
+      waterEl.innerText = data.water + " %";
+      foodEl.innerText = data.food + " %";
+    }
 
   } catch (error) {
     console.error("Fetch error:", error);
