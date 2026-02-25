@@ -24,8 +24,5 @@ async function fetchData() {
   }
 }
 
-// Update every 2 seconds
 setInterval(fetchData, 2000);
-
-// Run once on load
 fetchData();
