@@ -1,16 +1,16 @@
 const API_URL = "https://patient-monitar-production.up.railway.app/api/data";
 
+// Get elements once
+const heartEl = document.getElementById("heart");
+const waterEl = document.getElementById("water");
+const foodEl = document.getElementById("food");
+
+// Show initial loading
+heartEl.innerText = "Loading...";
+waterEl.innerText = "Loading...";
+foodEl.innerText = "Loading...";
+
 async function fetchData() {
-  // Get elements
-  const heartEl = document.getElementById("heart");
-  const waterEl = document.getElementById("water");
-  const foodEl = document.getElementById("food");
-
-  // Show loading while fetching
-  heartEl.innerText = "Loading...";
-  waterEl.innerText = "Loading...";
-  foodEl.innerText = "Loading...";
-
   try {
     const response = await fetch(API_URL);
 
@@ -18,14 +18,15 @@ async function fetchData() {
 
     const data = await response.json();
 
-    // Update dashboard
-    heartEl.innerText = data.heartRate + " BPM";
-    waterEl.innerText = data.water + " %";
-    foodEl.innerText = data.food + " %";
+    // Only update the text if new data is received
+    if (data.heartRate !== undefined) heartEl.innerText = data.heartRate + " BPM";
+    if (data.water !== undefined) waterEl.innerText = data.water + " %";
+    if (data.food !== undefined) foodEl.innerText = data.food + " %";
 
   } catch (error) {
     console.error("Fetch error:", error);
 
+    // Show error only if fetch fails
     heartEl.innerText = "Error";
     waterEl.innerText = "Error";
     foodEl.innerText = "Error";
@@ -35,5 +36,5 @@ async function fetchData() {
 // Initial fetch
 fetchData();
 
-// Refresh every 2 seconds
+// Refresh every 2 seconds without flashing "Loading..."
 setInterval(fetchData, 2000);
