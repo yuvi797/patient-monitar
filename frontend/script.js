@@ -1,31 +1,39 @@
-async function fetchData() {
-  try {
-    const response = await fetch(
-      "https://patient-monitar-production.up.railway.app/api/data"
-    );
+const API_URL = "https://patient-monitar-production.up.railway.app/api/data";
 
-    if (!response.ok) throw new Error("Server error");
+async function fetchData() {
+  // Get elements
+  const heartEl = document.getElementById("heart");
+  const waterEl = document.getElementById("water");
+  const foodEl = document.getElementById("food");
+
+  // Show loading while fetching
+  heartEl.innerText = "Loading...";
+  waterEl.innerText = "Loading...";
+  foodEl.innerText = "Loading...";
+
+  try {
+    const response = await fetch(API_URL);
+
+    if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
     const data = await response.json();
 
-    const heartEl = document.getElementById("heart");
-    const waterEl = document.getElementById("water");
-    const foodEl = document.getElementById("food");
-
-    if (heartEl && waterEl && foodEl) {
-      heartEl.innerText = data.heartRate + " BPM";
-      waterEl.innerText = data.water + " %";
-      foodEl.innerText = data.food + " %";
-    }
+    // Update dashboard
+    heartEl.innerText = data.heartRate + " BPM";
+    waterEl.innerText = data.water + " %";
+    foodEl.innerText = data.food + " %";
 
   } catch (error) {
     console.error("Fetch error:", error);
 
-    document.getElementById("heart").innerText = "Error";
-    document.getElementById("water").innerText = "Error";
-    document.getElementById("food").innerText = "Error";
+    heartEl.innerText = "Error";
+    waterEl.innerText = "Error";
+    foodEl.innerText = "Error";
   }
 }
 
-setInterval(fetchData, 2000);
+// Initial fetch
 fetchData();
+
+// Refresh every 2 seconds
+setInterval(fetchData, 2000);
