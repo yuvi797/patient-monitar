@@ -1,10 +1,8 @@
-const API_URL = "https://patient-monitar-production.up.railway.app/api/data";
-
 const heartEl = document.getElementById("heart");
 const waterEl = document.getElementById("water");
 const foodEl = document.getElementById("food");
 
-// Optional: simulate data if API fails
+// Simulate dynamic data
 function simulateData() {
   return {
     heartRate: Math.floor(Math.random() * (120 - 60 + 1)) + 60, // 60-120 BPM
@@ -34,18 +32,10 @@ function updateDOM(data) {
   else foodEl.className = "status normal";
 }
 
-async function fetchData() {
-  try {
-    const response = await fetch(API_URL);
-    if (!response.ok) throw new Error(`Server error: ${response.status}`);
-    const data = await response.json();
-    updateDOM(data);
-  } catch (error) {
-    console.error("Fetch error:", error);
-    // fallback: simulate random data
-    const data = simulateData();
-    updateDOM(data);
-  }
+// Use only simulated data for dynamic demo
+function fetchData() {
+  const data = simulateData();
+  updateDOM(data);
 }
 
 // Initial fetch
