@@ -4,6 +4,10 @@ async function fetchData() {
       "https://patient-monitar-production.up.railway.app/api/data"
     );
 
+    if (!response.ok) {
+      throw new Error("Server error");
+    }
+
     const data = await response.json();
 
     document.getElementById("heart").innerText =
@@ -16,7 +20,7 @@ async function fetchData() {
       data.food + " %";
 
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Fetch error:", error);
 
     document.getElementById("heart").innerText = "Error";
     document.getElementById("water").innerText = "Error";
